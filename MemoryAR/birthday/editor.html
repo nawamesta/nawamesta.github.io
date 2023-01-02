@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         html,
         body {
@@ -38,11 +39,48 @@
             /* Set the height of the iframe container to 80% of the page height */
         }
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPNZHH80ZC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VPNZHH80ZC');
+    </script>
+
+    <script>
+        /**
+        * The following event is sent when the page loads. You could
+        * wrap the event in a JavaScript function so the event is
+        * sent when the user performs some action.
+        */
+        gtag('event', 'screen_view', {
+            'app_name': 'memory_ar',
+            'screen_name': 'birthday_page_editor'
+        });
+
+        let queryString = window.location.search;
+        let urlParams = new URLSearchParams(queryString);
+
+        if (urlParams.has("campaign")) {
+            let campaign = urlParams.get('campaign');
+            gtag('campaign', {
+                'source': campaign
+            });
+        }
+
+    </script>
+
     <script>
         let ageData = 17;
-        let nameData = "Celine";
-        let fromData = "Zach";
+        let nameData = "Memory AR";
+        let fromData = "Memory AR";
         function updateIframe() {
+            gtag('editor', {
+                'action': 'preview'
+            });
             // Get the value of the iframe-src input field
             ageData = document.getElementById('iframe-src').value;
             nameData = document.getElementById('iframe-src2').value;
@@ -51,7 +89,7 @@
             document.querySelector('iframe').src = "index.html?age=" + ageData + "&name=" + nameData + "&from=" + fromData;
         }
         function share() {
-
+            updateIframe();
             // var src = document.getElementById('iframe-src').value;
             // var src2 = document.getElementById('iframe-src2').value;
             // var src3 = document.getElementById('iframe-src3').value;
@@ -62,14 +100,32 @@
             //         alert("index.html?age=" + ageData + "&name=" + nameData + "&from=" + fromData);
             //     }
             // });
-            let html
-            let dataShare = window.location.href.replace("/editor.html","/index.html")+"?age=" + ageData + "&name=" + nameData + "&from=" + fromData;
+            let queryString = window.location.search;
+            let urlParams = new URLSearchParams(queryString);
+            let campaign = "share";
+            if (urlParams.has("campaign")) {
+                campaign = urlParams.get('campaign');
+            }
+
+            let sourceIndex = window.location.href;
+
+            let html;
+            let dataShare;
+            if (sourceIndex.includes("?")) {
+                dataShare = window.location.href.replace("/editor.html", "/index.html") + "&age=" + ageData + "&name=" + nameData + "&from=" + fromData;
+            } else {
+                dataShare = window.location.href.replace("/editor.html", "/index.html") + "?age=" + ageData + "&name=" + nameData + "&from=" + fromData;
+            }
             navigator.clipboard.writeText(dataShare).then(() => {
                 alert('Content copied to clipboard');
                 /* Resolved - text copied to clipboard successfully */
             }, () => {
                 alert('Failed to copy');
                 /* Rejected - text failed to copy to the clipboard */
+            });
+
+            gtag('editor', {
+                'action': 'share'
             });
 
         }
@@ -88,8 +144,8 @@
 
             <label class="form-title" for="iframe-src">From :</label>
             <input class="form-input" type="text" id="iframe-src3" name="iframe-src" value="zach"><br>
-            <button type="button" onclick="share()">Share</button>
             <input type="submit" value="Preview">
+            <button type="button" onclick="share()">Preview & Share</button>
         </form>
     </div>
 
