@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .form-container {
+            width: 100%;
+            height: 20%;
+            /* Set the height of the form container to 20% of the page height */
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100vw;
+            height: 80vh;
+            /* Set the height of the iframe container to 80% of the page height */
+        }
+
+        .form-input {
+            margin: 5px;
+            width: 60%;
+        }
+
+        .form-title {
+            margin: 10px;
+            width: 30%;
+        }
+
+        .iframe-child {
+            width: 100%;
+            height: 100%;
+            /* Set the height of the iframe container to 80% of the page height */
+        }
+    </style>
+    <script>
+        let ageData = 17;
+        let nameData = "Celine";
+        let fromData = "Zach";
+        function updateIframe() {
+            // Get the value of the iframe-src input field
+            ageData = document.getElementById('iframe-src').value;
+            nameData = document.getElementById('iframe-src2').value;
+            fromData = document.getElementById('iframe-src3').value;
+            // Set the src attribute of the iframe element
+            document.querySelector('iframe').src = "index.html?age=" + ageData + "&name=" + nameData + "&from=" + fromData;
+        }
+        function share() {
+
+            // var src = document.getElementById('iframe-src').value;
+            // var src2 = document.getElementById('iframe-src2').value;
+            // var src3 = document.getElementById('iframe-src3').value;
+
+            // navigator.clipboard.writeText("index.html?age=" + ageData + "&name=" + nameData + "&from=" + fromData);
+            // navigator.permissions.query({ name: "write-on-clipboard" }).then((result) => {
+            //     if (result.state == "granted" || result.state == "prompt") {
+            //         alert("index.html?age=" + ageData + "&name=" + nameData + "&from=" + fromData);
+            //     }
+            // });
+            let html
+            let dataShare = window.location.href.replace("/editor.html","/index.html")+"?age=" + ageData + "&name=" + nameData + "&from=" + fromData;
+            navigator.clipboard.writeText(dataShare).then(() => {
+                alert('Content copied to clipboard');
+                /* Resolved - text copied to clipboard successfully */
+            }, () => {
+                alert('Failed to copy');
+                /* Rejected - text failed to copy to the clipboard */
+            });
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="form-container">
+        <!-- Form to edit the iframe goes here -->
+        <form onsubmit="updateIframe(); return false;">
+            <label class="form-title" for="iframe-src">Age :</label>
+            <input class="form-input" type="text" id="iframe-src" name="iframe-src" value="17"><br>
+
+            <label class="form-title" for="iframe-src">Name :</label>
+            <input class="form-input" type="text" id="iframe-src2" name="iframe-src" value="celine"><br>
+
+            <label class="form-title" for="iframe-src">From :</label>
+            <input class="form-input" type="text" id="iframe-src3" name="iframe-src" value="zach"><br>
+            <button type="button" onclick="share()">Share</button>
+            <input type="submit" value="Preview">
+        </form>
+    </div>
+
+    <div class="iframe-container">
+        <iframe class="iframe-child" src="index.html"></iframe>
+    </div>
+</body>
+
+</html>
