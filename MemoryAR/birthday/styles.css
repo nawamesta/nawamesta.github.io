@@ -36,6 +36,13 @@ body {
     
 }
 
+#downloadmarker {
+    position: fixed;
+    bottom: 20px;
+    right: 20px; 
+    z-index: 110;
+}
+
 h1 {
     font-family: 'Segoe UI';
     font-weight: lighter;
